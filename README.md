@@ -3,6 +3,9 @@ RepresentationBiasEstimation
 
 Bounding Bias of Balancing Representations for Estimating Individualized Treatment Effects
 
+<img width="1156" alt="image" src="https://github.com/Valentyn1997/RICB/assets/23198776/f0879423-6d96-4255-a5a8-d446549518c9">
+
+
 The project is built with the following Python libraries:
 1. [Pyro](https://pyro.ai/) - deep learning and probabilistic models (MDNs, NFs)
 2. [Hydra](https://hydra.cc/docs/intro/) - simplified command line arguments management
