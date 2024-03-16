@@ -1,0 +1,10 @@
+# @package _global_
+cate_estimator:
+  _target_: src.models.KNN
+  name: knn
+
+  n_neighbors: 5
+
+  tune_hparams: False
+  tune_range:                   # number of trials for random search
+  tune_type:

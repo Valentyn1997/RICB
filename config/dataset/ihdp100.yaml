@@ -1,0 +1,15 @@
+# @package _global_
+dataset:
+  _target_: src.data.IHDP100
+  name: ihdp100
+  collection: True
+  train_test_splitted: True
+  oracle_available: True
+  test_size: 0.15
+  n_shuffle_splits:             # not applicable
+  extra_hid_multiplier: 1
+
+  dim_cov: 25
+
+exp:
+  save_results: False

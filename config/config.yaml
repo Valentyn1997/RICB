@@ -1,0 +1,160 @@
+# Dataset for training / evaluation -- specific values should be filled for each dataset
+dataset:
+  name: ???
+  collection: False                 # True for acic_2016 and acic_2018
+  train_test_splitted: False
+  oracle_available: False
+  test_size: 0.15                    # train/test split ratio
+  n_shuffle_splits: 5
+  dataset_ix:                       # dataset index
+  dim_cov: ???
+  extra_hid_multiplier:
+
+# Model specific parameters
+repr_net:
+  dim_repr_multiplier:
+  network_type:                     # tnet | snet
+  has_prop_net_cov: False
+  has_prop_net_repr: False
+
+  # Tunable hparams (some with default values)
+  dim_hid1_multiplier: 1.0
+  dim_hid2_multiplier: 1.0
+  lr:
+  batch_size:
+  wd:
+
+  tune_hparams: False
+  tune_type: choice
+  hparams_grid:
+  tune_range:
+  num_epochs: 5000
+
+prop_net_cov:
+  _target_: src.models.PropNet
+
+  # Tunable hparams (some with default values)
+  dim_hid1_multiplier: 1.0
+  lr:
+  batch_size:
+  wd:
+
+  tune_hparams: False
+  tune_type: choice
+  tune_range: 50
+  num_epochs: 5000
+  hparams_grid:
+    lr:
+      - 0.001
+      - 0.005
+      - 0.01
+    batch_size:
+      - 32
+      - 64
+      - 128
+    wd:
+      - 0.0
+      - 0.001
+      - 0.01
+      - 0.1
+    dim_hid1_multiplier:
+      - 1.0
+      - 1.5
+      - 2.0
+
+prop_net_repr:
+  _target_: src.models.PropNet
+
+  # Tunable hparams (some with default values)
+  dim_hid1_multiplier: 2.0
+  lr:
+  batch_size:
+  wd:
+
+  tune_hparams: False
+  tune_type: choice
+  tune_range: 50
+  num_epochs: 5000
+
+  hparams_grid:
+    lr:
+      - 0.001
+      - 0.005
+      - 0.01
+    batch_size:
+      - 32
+      - 64
+      - 128
+    wd:
+      - 0.0
+      - 0.001
+      - 0.01
+      - 0.1
+    dim_hid1_multiplier:
+      - 1.0
+      - 1.5
+      - 2.0
+
+cnf_repr:
+  _target_: src.models.MSM
+  dim_hid1_multiplier: 1.0
+  count_bins: 10
+  lr:
+  batch_size:
+  noise_std_X:
+  noise_std_Y:
+
+  tune_hparams: False
+  tune_type: choice
+  tune_range: 100
+  num_epochs: 5000
+
+  hparams_grid:
+    count_bins:
+      - 5
+      - 10
+      - 20
+    lr:
+      - 0.001
+      - 0.005
+      - 0.01
+    batch_size:
+      - 32
+      - 64
+      - 128
+    noise_std_X:
+      - 0.05
+      - 0.1
+      - 0.5
+    noise_std_Y:
+      - 0.05
+      - 0.1
+      - 0.5
+    dim_hid1_multiplier:
+      - 1.0
+      - 1.5
+      - 2.0
+
+msm:
+  n_samples: 5000
+  delta:
+    - 0.0005
+    - 0.001
+    - 0.005
+    - 0.01
+    - 0.05
+
+exp:
+  seed: 10
+  device: cuda
+  logging: True
+  plotting: False
+  save_results: True
+  mlflow_uri: http://127.0.0.1:5000  # MlFlow server is located on 10.195.8.58
+
+
+# Hydra defaults
+defaults:
+  - _self_
+  - override hydra/hydra_logging: colorlog
+  - override hydra/job_logging: colorlog

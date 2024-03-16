@@ -1,0 +1,12 @@
+# @package _global_
+cate_estimator:
+  _target_: src.models.CForest
+  name: causal_forest
+
+  n_estimators: 100
+  min_samples_leaf: 5
+  min_balancedness_tol: 0.45
+
+  tune_hparams: False
+  tune_range:                   # number of trials for random search
+  tune_type:

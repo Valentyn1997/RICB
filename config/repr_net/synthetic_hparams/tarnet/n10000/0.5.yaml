@@ -1,0 +1,27 @@
+# @package _global_
+repr_net:
+  dim_repr_multiplier: 0.5
+  dim_hid1_multiplier: 2.0
+  dim_hid2_multiplier: 2.0
+  lr: 0.005
+  wd: 0.0
+  batch_size: 128
+prop_net_repr:
+  dim_hid1_multiplier: 1.5
+  lr: 0.005
+  wd: 0.01
+  batch_size: 64
+prop_net_cov:
+  dim_hid1_multiplier: 1.0
+  lr: 0.005
+  wd: 0.1
+  batch_size: 128
+cnf_repr:
+  dim_hid1_multiplier: 2.0
+  lr: 0.01
+  batch_size: 64
+  count_bins: 5
+  noise_std_X: 0.05
+  noise_std_Y: 0.05
+dataset:
+  n_samples_train: 10000

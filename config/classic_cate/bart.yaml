@@ -1,0 +1,14 @@
+# @package _global_
+cate_estimator:
+  _target_: src.models.BART
+  name: bart
+
+  num_sweeps: 200
+  num_trees_pr: 100
+  num_trees_trt: 100
+  max_depth: 250
+  min_samples_leaf: 5
+
+  tune_hparams: False
+  tune_range:                   # number of trials for random search
+  tune_type:

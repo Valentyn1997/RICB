@@ -1,0 +1,33 @@
+# @package _global_
+repr_net:
+  _target_: src.models.InvTARNet
+  name: inv_tarnet
+  network_type: tnet
+
+  alpha_inv: 1.0
+
+  tune_hparams: False
+  tune_range: 50                  # number of trials for random search
+  tune_type: choice
+  hparams_grid:
+    lr:
+      - 0.001
+      - 0.005
+      - 0.01
+    batch_size:
+      - 32
+      - 64
+      - 128
+    wd:
+      - 0.0
+      - 0.001
+      - 0.01
+      - 0.1
+    dim_hid1_multiplier:
+      - 1.0
+      - 1.5
+      - 2.0
+    dim_hid2_multiplier:
+      - 1.0
+      - 1.5
+      - 2.0

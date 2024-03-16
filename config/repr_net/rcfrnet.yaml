@@ -1,0 +1,50 @@
+# @package _global_
+repr_net:
+  _target_: src.models.RCFRNet
+  name: rcfrnet
+  network_type: tnet
+  alpha: 1.0
+  ipm: wass                       # wass | mmd
+
+  dim_hid3_multiplier: 1.0
+  weight_nn_lr:
+  weight_nn_wd:
+
+  tune_hparams: False
+  tune_range: 50                  # number of trials for random search
+  tune_type: choice
+  hparams_grid:
+    lr:
+      - 0.001
+      - 0.005
+      - 0.01
+    weight_nn_lr:
+      - 0.001
+      - 0.005
+      - 0.01
+    weight_nn_wd:
+      - 0.0
+      - 0.001
+      - 0.01
+      - 0.1
+    batch_size:
+      - 32
+      - 64
+      - 128
+    wd:
+      - 0.0
+      - 0.001
+      - 0.01
+      - 0.1
+    dim_hid1_multiplier:
+      - 1.0
+      - 1.5
+      - 2.0
+    dim_hid2_multiplier:
+      - 1.0
+      - 1.5
+      - 2.0
+    dim_hid3_multiplier:
+      - 1.0
+      - 1.5
+      - 2.0
