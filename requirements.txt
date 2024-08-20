@@ -1,4 +1,3 @@
-# local package
 importlib-metadata<5.0
 pytest
 click
