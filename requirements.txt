@@ -1,7 +1,6 @@
 # local package
--e .
-
 importlib-metadata<5.0
+pytest
 click
 Sphinx
 coverage
@@ -17,6 +16,7 @@ hydra_colorlog
 
 seaborn
 torch
+torchvision
 pyro-ppl
 pytorch-lightning
 mlflow
@@ -27,3 +27,5 @@ omegaconf
 tqdm
 ray[tune]
 econml
+POT
+xbcausalforest
