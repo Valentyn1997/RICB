@@ -9,7 +9,7 @@ import logging
 from pytorch_lightning.loggers import MLFlowLogger
 
 from econml.grf import CausalForest
-from xbcausalforest import XBCF
+# from xbcausalforest import XBCF
 from sklearn.neighbors import KNeighborsRegressor
 
 from src.models.utils import fit_eval_kfold
@@ -151,35 +151,35 @@ class CForest(CATEEstimator):
         return self.estimator.predict(cov_f)
 
 
-class BART(CATEEstimator):
-    def __init__(self, args: DictConfig = None, mlflow_logger: MLFlowLogger = None, **kwargs):
-        super(BART, self).__init__(args, mlflow_logger)
-
-        self.estimator = XBCF(num_sweeps=args.cate_estimator.num_sweeps,
-                              num_trees_pr=args.cate_estimator.num_trees_pr,
-                              num_trees_trt=args.cate_estimator.num_trees_trt,
-                              Nmin=args.cate_estimator.min_samples_leaf,
-                              # alpha_pr=0.95,  # shrinkage (splitting probability)
-                              # beta_pr=2,  # shrinkage (tree depth)
-                              # alpha_trt=0.95,  # shrinkage for treatment part
-                              # beta_trt=2,
-                              # max_depth=500,
-                              max_depth=args.cate_estimator.max_depth,
-                              parallel=True,
-                              p_categorical_pr=0,
-                              p_categorical_trt=0,
-                              standardize_target=False)
-
-    def fit(self, train_data_dict: dict, log: bool):
-        cov_f, treat_f, out_f = self.prepare_train_data(train_data_dict)
-
-        self.estimator.fit(x_t=cov_f.astype('float32'),
-                           x=cov_f.astype('float32'),
-                           y=out_f.reshape(-1).astype('float32'),
-                           z=treat_f.reshape(-1).astype('int32'))
-
-    def predict_cate(self, cov_f: np.array):
-        return self.estimator.predict(cov_f.astype('float32')).reshape(-1, 1)
+# class BART(CATEEstimator):
+#     def __init__(self, args: DictConfig = None, mlflow_logger: MLFlowLogger = None, **kwargs):
+#         super(BART, self).__init__(args, mlflow_logger)
+#
+#         self.estimator = XBCF(num_sweeps=args.cate_estimator.num_sweeps,
+#                               num_trees_pr=args.cate_estimator.num_trees_pr,
+#                               num_trees_trt=args.cate_estimator.num_trees_trt,
+#                               Nmin=args.cate_estimator.min_samples_leaf,
+#                               # alpha_pr=0.95,  # shrinkage (splitting probability)
+#                               # beta_pr=2,  # shrinkage (tree depth)
+#                               # alpha_trt=0.95,  # shrinkage for treatment part
+#                               # beta_trt=2,
+#                               # max_depth=500,
+#                               max_depth=args.cate_estimator.max_depth,
+#                               parallel=True,
+#                               p_categorical_pr=0,
+#                               p_categorical_trt=0,
+#                               standardize_target=False)
+#
+#     def fit(self, train_data_dict: dict, log: bool):
+#         cov_f, treat_f, out_f = self.prepare_train_data(train_data_dict)
+#
+#         self.estimator.fit(x_t=cov_f.astype('float32'),
+#                            x=cov_f.astype('float32'),
+#                            y=out_f.reshape(-1).astype('float32'),
+#                            z=treat_f.reshape(-1).astype('int32'))
+#
+#     def predict_cate(self, cov_f: np.array):
+#         return self.estimator.predict(cov_f.astype('float32')).reshape(-1, 1)
 
 
 class KNN(CATEEstimator):
