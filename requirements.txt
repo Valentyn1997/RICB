@@ -26,4 +26,3 @@ omegaconf
 tqdm
 ray[tune]
 econml
-xbcausalforest
