@@ -1,7 +1,9 @@
-RepresentationBiasEstimation
-==============================
+# Representation-Induced Counfounding Bias 
 
-Bounding Bias of Balancing Representations for Estimating Individualized Treatment Effects
+[![Conference](https://img.shields.io/badge/ICLR24-Paper-blue])](https://openreview.net/forum?id=d3xKPQVjSc)
+[![arXiv](https://img.shields.io/badge/arXiv-2311.11321-b31b1b.svg)](https://arxiv.org/abs/2311.11321)
+
+Bounds on Representation-Induced Confounding Bias for Treatment Effect Estimation
 
 <img width="1156" alt="image" src="https://github.com/Valentyn1997/RICB/assets/23198776/f0879423-6d96-4255-a5a8-d446549518c9">
 
