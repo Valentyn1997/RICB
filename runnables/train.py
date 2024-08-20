@@ -195,11 +195,10 @@ def main(args: DictConfig):
 
         mlflow_logger.experiment.set_terminated(mlflow_logger.run_id) if args.exp.logging else None
 
-    return results_in, results_out
-    # return {
-    #     'models': {'repr_net': repr_net, 'cnf_repr': cnf_repr, 'prop_net_repr': prop_net_repr, 'prop_net_cov': prop_net_cov},
-    #     'data_dicts': {'train_data_dict': train_data_dict, 'test_data_dict': test_data_dict}
-    # }
+    return {
+        'models': {'repr_net': repr_net, 'cnf_repr': cnf_repr, 'prop_net_repr': prop_net_repr, 'prop_net_cov': prop_net_cov},
+        'data_dicts': {'train_data_dict': train_data_dict, 'test_data_dict': test_data_dict}
+    }
 
 
 if __name__ == "__main__":
