@@ -1,6 +1,7 @@
 # local package
 -e .
 
+importlib-metadata<5.0
 click
 Sphinx
 coverage
