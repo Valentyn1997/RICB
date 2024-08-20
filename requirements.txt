@@ -15,7 +15,7 @@ hydra-core
 hydra_colorlog
 
 seaborn
-torch
+torch>=2.3.0
 torchvision
 pyro-ppl
 pytorch-lightning
