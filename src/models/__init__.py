@@ -2,5 +2,3 @@ from src.models.repr_nets import BaseRepresentationNet, TARNet, CFRNet, BNNet, I
 from src.models.prop_nets import PropNet
 from src.models.msm import MSM
 from src.models.classic_cate import CForest, BART, KNN
-
-

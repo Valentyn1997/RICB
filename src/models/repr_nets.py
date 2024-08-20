@@ -23,9 +23,11 @@ class BaseRepresentationNet(BaseNet):
     def __init__(self, args: DictConfig = None, mlflow_logger: MLFlowLogger = None, **kwargs):
         super(BaseRepresentationNet, self).__init__(args, mlflow_logger)
 
-        self.dim_hid1 = args.repr_net.dim_hid1 = int(args.repr_net.dim_hid1_multiplier * args.dataset.extra_hid_multiplier * self.dim_cov)
+        self.dim_hid1 = args.repr_net.dim_hid1 = int(args.repr_net.dim_hid1_multiplier * args.dataset.extra_hid_multiplier *
+                                                     self.dim_cov)
         self.dim_repr = args.repr_net.dim_repr = int(args.repr_net.dim_repr_multiplier * self.dim_cov)
-        self.dim_hid2 = args.repr_net.dim_hid2 = int(args.repr_net.dim_hid2_multiplier * args.dataset.extra_hid_multiplier * self.dim_repr)
+        self.dim_hid2 = args.repr_net.dim_hid2 = int(args.repr_net.dim_hid2_multiplier * args.dataset.extra_hid_multiplier *
+                                                     self.dim_repr)
         self.wd = args.repr_net.wd
 
         self.out_scaler = StandardScaler()
@@ -165,7 +167,8 @@ class TARNet(BaseRepresentationNet):
 
         super(TARNet, self).__init__(args, mlflow_logger)
         self.repr_nn = DenseNN(self.dim_cov, [self.dim_hid1], param_dims=[self.dim_repr], nonlinearity=torch.nn.ELU()).float()
-        self.mu_nn = torch.nn.ModuleList([DenseNN(self.dim_repr, [self.dim_hid2], param_dims=[1], nonlinearity=torch.nn.ELU()).float() for _ in self.treat_options])
+        self.mu_nn = torch.nn.ModuleList([DenseNN(self.dim_repr, [self.dim_hid2], param_dims=[1],
+                                                  nonlinearity=torch.nn.ELU()).float() for _ in self.treat_options])
 
         self.to(self.device)
 
@@ -275,13 +278,15 @@ class RCFRNet(CFRNet):
         self.weight_nn_lr = args.repr_net.weight_nn_lr
         self.weight_nn_wd = args.repr_net.weight_nn_wd
 
-        self.dim_hid3 = args.repr_net.dim_hid3 = int(args.repr_net.dim_hid3_multiplier * args.dataset.extra_hid_multiplier * self.dim_repr)
+        self.dim_hid3 = args.repr_net.dim_hid3 = int(args.repr_net.dim_hid3_multiplier * args.dataset.extra_hid_multiplier *
+                                                     self.dim_repr)
         self.weight_nn = DenseNN(self.dim_repr, [self.dim_hid3], param_dims=[1], nonlinearity=torch.nn.ELU()).float()
 
         self.to(self.device)
 
     def get_optimizer(self):
-        return [torch.optim.AdamW(list(self.repr_nn.parameters()) + list(self.mu_nn.parameters()), lr=self.lr, weight_decay=self.wd),
+        return [torch.optim.AdamW(list(self.repr_nn.parameters()) + list(self.mu_nn.parameters()), lr=self.lr,
+                                  weight_decay=self.wd),
                 torch.optim.AdamW(self.weight_nn.parameters(), lr=self.weight_nn_lr, weight_decay=self.weight_nn_wd)]
 
     def fit(self, train_data_dict: dict, log: bool):
@@ -370,14 +375,13 @@ class CFRISW(CFRNet):
 
             prop_preds = self.prop_net_repr.prop_nn(repr_f.detach())
             loss = torch.binary_cross_entropy_with_logits(prop_preds, treat_f).mean()
-            log_dict = {f'train_bce_repr': loss.item()}
+            log_dict = {'train_bce_repr': loss.item()}
 
             loss.backward()
             prop_net_repr_optimizer.step()
 
             if step % 50 == 0 and log:
                 self.mlflow_logger.log_metrics(log_dict, step=step)
-
 
     def evaluate(self, data_dict: dict, log: bool, prefix: str):
         cov_f, treat_f, out_f, _, _, _, _ = self.prepare_eval_data(data_dict)
@@ -400,8 +404,8 @@ class CFRISW(CFRNet):
         return results
 
     def get_optimizer(self):
-        return [torch.optim.AdamW(list(self.repr_nn.parameters()) + list(self.mu_nn.parameters()), lr=self.lr, weight_decay=self.wd),
-                self.prop_net_repr.get_optimizer()]
+        return [torch.optim.AdamW(list(self.repr_nn.parameters()) + list(self.mu_nn.parameters()), lr=self.lr,
+                                  weight_decay=self.wd), self.prop_net_repr.get_optimizer()]
 
     @staticmethod
     def set_hparams(model_args: DictConfig, new_model_args: dict):
@@ -446,7 +450,6 @@ class BWCFR(CFRNet):
         train_dataloader = DataLoader(training_data, batch_size=self.batch_size, shuffle=True,
                                       generator=torch.Generator(device=self.device))
         return train_dataloader
-
 
     def fit(self, train_data_dict: dict, log: bool):
         cov_f, treat_f, out_f, prop_pred_cov = self.prepare_train_data(train_data_dict)

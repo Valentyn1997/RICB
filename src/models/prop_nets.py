@@ -24,7 +24,8 @@ class PropNet(BaseNet):
         super(PropNet, self).__init__(args, mlflow_logger)
 
         self.dim_input = self.dim_cov if kind == 'cov' else args.repr_net.dim_repr
-        self.dim_hid1 = args[self.name].dim_hid1 = int(args[self.name].dim_hid1_multiplier * args.dataset.extra_hid_multiplier * self.dim_input)
+        self.dim_hid1 = args[self.name].dim_hid1 = int(args[self.name].dim_hid1_multiplier * args.dataset.extra_hid_multiplier *
+                                                       self.dim_input)
         self.wd = args[self.name].wd
 
         self.prop_nn = DenseNN(self.dim_input, [self.dim_hid1], param_dims=[1], nonlinearity=torch.nn.ELU()).float()

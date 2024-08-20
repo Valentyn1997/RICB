@@ -196,7 +196,3 @@ class KNN(CATEEstimator):
 
     def predict_cate(self, cov_f: np.array):
         return self.estimator_1.predict(cov_f) - self.estimator_0.predict(cov_f)
-
-
-
-

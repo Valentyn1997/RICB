@@ -38,7 +38,7 @@ class HCMNISTSubset(datasets.MNIST):
         train = split == "train" or split == "valid"
         self.__class__.__name__ = "MNIST"
         super(HCMNISTSubset, self).__init__(root, train=train, transform=transform, target_transform=target_transform,
-                                      download=download)
+                                            download=download)
         self.data = self.data.view(len(self.targets), -1).numpy()
         self.targets = self.targets.numpy()
 

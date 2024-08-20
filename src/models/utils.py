@@ -28,7 +28,7 @@ def fit_eval_kfold(args: dict, orig_hparams: DictConfig, model_cls, train_data_d
         val_metrics = []
         for train_index, val_index in kf.split(train_data_dict['cov_f']):
             ttrain_data_dict, val_data_dict = subset_by_indices(train_data_dict, train_index), \
-                                              subset_by_indices(train_data_dict, val_index)
+                subset_by_indices(train_data_dict, val_index)
 
             model = model_cls(new_params, kind=kind, **kwargs)
             model.fit(train_data_dict=ttrain_data_dict, log=False)
