@@ -41,7 +41,8 @@ def main(args: DictConfig):
 
         # ================= Train / test split & Mlflow init =================
         experiment_name = f'{args.repr_net.name}/{args.dataset.name}/new'
-        mlflow_logger = MLFlowLogger(experiment_name=experiment_name, tracking_uri=args.exp.mlflow_uri) if args.exp.logging else None
+        mlflow_logger = MLFlowLogger(experiment_name=experiment_name,
+                                     tracking_uri=args.exp.mlflow_uri) if args.exp.logging else None
 
         args.dataset.dataset_ix = ix if not specific_ix else args.dataset.dataset_ix
         if args.dataset.train_test_splitted:
@@ -56,7 +57,8 @@ def main(args: DictConfig):
         ss = ShuffleSplit(n_splits=1, random_state=args.exp.seed, test_size=args.dataset.test_size)
         ttrain_index, val_index = list(ss.split(train_data_dict['cov_f']))[0]
 
-        ttrain_data_dict, val_data_dict = subset_by_indices(train_data_dict, ttrain_index), subset_by_indices(train_data_dict, val_index)
+        ttrain_data_dict, val_data_dict = subset_by_indices(train_data_dict, ttrain_index), \
+            subset_by_indices(train_data_dict, val_index)
 
         # ================= Fitting representation net =================
         if args.repr_net.has_prop_net_cov:  # For BWCFR
@@ -161,15 +163,18 @@ def main(args: DictConfig):
         # Inferring bounds
         for data_dict in [train_data_dict, ttrain_data_dict, val_data_dict, test_data_dict]:
             for delta in args.msm.delta:
-                data_dict[f'mu_pred0_PSM_bounds_{delta}'], data_dict[f'mu_pred1_PSM_bounds_{delta}'] = cnf_repr.get_bounds(data_dict, delta, n_samples=args.msm.n_samples)
+                data_dict[f'mu_pred0_PSM_bounds_{delta}'], data_dict[f'mu_pred1_PSM_bounds_{delta}'] = \
+                    cnf_repr.get_bounds(data_dict, delta, n_samples=args.msm.n_samples)
 
         # Evaluation
         results_in = cnf_repr.evaluate(data_dict=train_data_dict, log=args.exp.logging, prefix='in')
         results_out = cnf_repr.evaluate(data_dict=test_data_dict, log=args.exp.logging, prefix='out')
         logger.info(f'In-sample performance CNF: {results_in}, Out-sample performance CNF: {results_out}')
 
-        pehe_in = cnf_repr.evaluate_pehe(data_dict=train_data_dict, log=args.exp.logging, prefix='in', n_samples=args.msm.n_samples)
-        pehe_out = cnf_repr.evaluate_pehe(data_dict=test_data_dict, log=args.exp.logging, prefix='out', n_samples=args.msm.n_samples)
+        pehe_in = cnf_repr.evaluate_pehe(data_dict=train_data_dict, log=args.exp.logging, prefix='in',
+                                         n_samples=args.msm.n_samples)
+        pehe_out = cnf_repr.evaluate_pehe(data_dict=test_data_dict, log=args.exp.logging, prefix='out',
+                                          n_samples=args.msm.n_samples)
         logger.info(f'In-sample PEHE CNF: {pehe_in}, Out-sample PEHE CNF: {pehe_out}')
 
         for delta in args.msm.delta:
@@ -190,10 +195,11 @@ def main(args: DictConfig):
 
         mlflow_logger.experiment.set_terminated(mlflow_logger.run_id) if args.exp.logging else None
 
-    return {
-        'models': {'repr_net': repr_net, 'cnf_repr': cnf_repr, 'prop_net_repr': prop_net_repr, 'prop_net_cov': prop_net_cov},
-        'data_dicts': {'train_data_dict': train_data_dict, 'test_data_dict': test_data_dict}
-    }
+    return results_in, results_out
+    # return {
+    #     'models': {'repr_net': repr_net, 'cnf_repr': cnf_repr, 'prop_net_repr': prop_net_repr, 'prop_net_cov': prop_net_cov},
+    #     'data_dicts': {'train_data_dict': train_data_dict, 'test_data_dict': test_data_dict}
+    # }
 
 
 if __name__ == "__main__":
